@@ -1,6 +1,6 @@
 {
     "name": "podio-labs/podio-laravel",
-    "description": "Unofficial Laravel bridge for the Podio API client.",
+    "description": "Minimal Laravel bridge for the Podio API client.",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -42,6 +42,9 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
