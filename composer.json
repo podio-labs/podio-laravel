@@ -1,0 +1,48 @@
+{
+    "name": "podio-labs/podio-laravel",
+    "description": "Unofficial Laravel bridge for the Podio API client.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "illuminate/http": "^12.0 || ^13.0",
+        "illuminate/support": "^12.0 || ^13.0",
+        "podio-labs/podio-client": "^0.1"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pao": "^1.0",
+        "laravel/pint": "^1.29",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Podio\\Laravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Podio\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Podio\\Laravel\\PodioServiceProvider"
+            ],
+            "aliases": {
+                "Podio": "Podio\\Laravel\\Facades\\Podio"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
