@@ -1,8 +1,8 @@
-# Podio for Laravel
+# Podio Laravel
 
+[![Tests](https://github.com/podio-labs/podio-laravel/actions/workflows/tests.yml/badge.svg)](https://github.com/podio-labs/podio-laravel/actions/workflows/tests.yml)
 [![Latest Stable Version](https://img.shields.io/packagist/v/podio-labs/podio-laravel)](https://packagist.org/packages/podio-labs/podio-laravel)
 [![License](https://img.shields.io/packagist/l/podio-labs/podio-laravel)](https://packagist.org/packages/podio-labs/podio-laravel)
-[![Total Downloads](https://img.shields.io/packagist/dt/podio-labs/podio-laravel)](https://packagist.org/packages/podio-labs/podio-laravel)
 
 Talk to the Podio API from Laravel through a clean, testable `Podio` facade — config-driven auth, cached tokens, and Laravel's own HTTP client under the hood.
 
@@ -19,6 +19,8 @@ Podio::comments()->create('item', $item->item_id, [
     'value' => 'Created from the contact form',
 ]);
 ```
+
+> Not using Laravel? See [`podio-labs/podio-client`](https://github.com/podio-labs/podio-client).
 
 ## Installation
 

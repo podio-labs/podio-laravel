@@ -1,8 +1,24 @@
 {
     "name": "podio-labs/podio-laravel",
-    "description": "Minimal Laravel bridge for the Podio API client.",
+    "description": "Laravel integration for the Podio API. A Podio facade with config-driven auth and token caching.",
     "type": "library",
+    "keywords": [
+        "podio",
+        "podio-api",
+        "podio-laravel",
+        "laravel"
+    ],
+    "homepage": "https://github.com/podio-labs/podio-laravel",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Karim Tao"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/podio-labs/podio-laravel/issues",
+        "source": "https://github.com/podio-labs/podio-laravel"
+    },
     "require": {
         "php": "^8.3",
         "illuminate/http": "^12.0 || ^13.0",
