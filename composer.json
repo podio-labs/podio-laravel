@@ -23,14 +23,15 @@
         "php": "^8.3",
         "illuminate/http": "^12.0 || ^13.0",
         "illuminate/support": "^12.0 || ^13.0",
-        "podio-labs/podio-client": "^0.2"
+        "podio-labs/podio-client": "^0.3"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
         "laravel/pao": "^1.0",
         "laravel/pint": "^1.29",
         "orchestra/testbench": "^10.0",
-        "pestphp/pest": "^4.4"
+        "pestphp/pest": "^4.4",
+        "pestphp/pest-plugin-type-coverage": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -60,7 +61,18 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest"
+        "lint": "pint",
+        "test:lint": "pint --test",
+        "test:static": "phpstan analyse",
+        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:unit": "pest --parallel --coverage --min=100",
+        "test:mutation": "pest --parallel --mutate --everything --covered-only --min=80",
+        "test": [
+            "@test:lint",
+            "@test:static",
+            "@test:type-coverage",
+            "@test:unit"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true

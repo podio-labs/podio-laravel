@@ -42,18 +42,42 @@ php artisan vendor:publish --tag=podio-config
 
 ## Configuration
 
-### Minimal
+### Authentication
 
-Configure your `.env`:
+Set your Podio API credentials, then pick a method. The token is fetched, cached and refreshed for you.
+
+**Password** — a service account, server-to-server:
 
 ```dotenv
 PODIO_CLIENT_ID=your-app-client-id
 PODIO_CLIENT_SECRET=your-app-client-secret
+PODIO_AUTH_METHOD=password
 PODIO_USERNAME=service@example.com
 PODIO_PASSWORD=password
 ```
 
-### Full
+**App** — a single Podio app via its token:
+
+```dotenv
+PODIO_CLIENT_ID=your-app-client-id
+PODIO_CLIENT_SECRET=your-app-client-secret
+PODIO_AUTH_METHOD=app
+PODIO_APP_ID=123456
+PODIO_APP_TOKEN=your-app-token
+```
+
+Read (and persist) the current token:
+
+```php
+$token = Podio::authenticate(); // ensure a valid token and return it
+$token = Podio::token();        // current token, or null
+
+$token->value();
+$token->expiresAt();
+$token->refreshToken();
+```
+
+### All options
 
 Everything in `config/podio.php`:
 
@@ -62,8 +86,11 @@ Everything in `config/podio.php`:
 | `base_url` | `PODIO_BASE_URL` | `'https://api.podio.com'` |
 | `auth.client_id` | `PODIO_CLIENT_ID` | `null`                    |
 | `auth.client_secret` | `PODIO_CLIENT_SECRET` | `null`                    |
+| `auth.method` | `PODIO_AUTH_METHOD` | `'password'`              |
 | `auth.username` | `PODIO_USERNAME` | `null`                    |
 | `auth.password` | `PODIO_PASSWORD` | `null`                    |
+| `auth.app_id` | `PODIO_APP_ID` | `null`                    |
+| `auth.app_token` | `PODIO_APP_TOKEN` | `null`                    |
 | `http.timeout` | `PODIO_HTTP_TIMEOUT` | `30`                      |
 | `http.connect_timeout` | `PODIO_HTTP_CONNECT_TIMEOUT` | `10`                      |
 | `cache.store` | `PODIO_CACHE_STORE` | `env('CACHE_STORE')`      |
@@ -89,8 +116,10 @@ $file = Podio::files()->upload($absolutePath, 'photo.jpg');
 Podio::files()->attach($file->file_id, ['ref_type' => 'item', 'ref_id' => $itemId]);
 $bytes = Podio::files()->getRaw($fileId);
 
-// Comments & embeds
+// Comments
 Podio::comments()->create('item', $itemId, ['value' => 'Imported from Dropbox']);
+
+// Embeds
 $embed = Podio::embed()->create(['url' => 'https://youtu.be/...']);
 
 // Webhooks
@@ -98,8 +127,16 @@ $hooks = Podio::hooks()->getForApp($appId);
 $hook = Podio::hooks()->createForApp($appId, ['url' => route('podio.hook'), 'type' => 'item.create']);
 Podio::hooks()->verify($hook->hook_id);
 
+// Organizations
+$organizations = Podio::organizations()->getAll();
+$organization = Podio::organizations()->get($orgId);
+
+// Spaces
+$space = Podio::spaces()->get($spaceId);
+
 // Apps
 $app = Podio::apps()->get($appId);
+$apps = Podio::apps()->getForSpace($spaceId);
 ```
 
 ### Raw requests
