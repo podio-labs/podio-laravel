@@ -144,6 +144,20 @@ $user = Podio::users()->get();
 $status = Podio::users()->getStatus();
 ```
 
+### Request options
+
+```php
+$item = Podio::items()->withFields('items.fields(files)')->get($itemId);
+$item = Podio::items()->withRetry(3)->get($itemId);
+$item = Podio::items()->withTimeout(120)->get($itemId);
+```
+
+| Option                  | What it does                    |
+|-------------------------|---------------------------------|
+| `withFields($fields)`   | sets Podio's `fields` parameter |
+| `withRetry($times)`     | retries a failed call           |
+| `withTimeout($seconds)` | sets the timeout of the call    |
+
 ### Raw requests
 
 For anything not covered by an endpoint, send a request directly:
@@ -167,7 +181,7 @@ Podio::rateLimit()->remaining();
 
 `Podio\Laravel\Podio` builds a `Podio\Client\PodioClient` from your config and:
 
-- transports requests through Laravel's `Http` facade via a PSR-18 adapter (`LaravelHttpClient`) — so it honours your HTTP config, fakes, and middleware;
+- transports requests through Laravel's `Http` facade via a PSR-18 adapter (`LaravelHttpClient`) — so it honours your HTTP config, fakes, and middleware, and the timeout of a single request (`withTimeout()`);
 - caches the OAuth access token (`cache.store` / `cache.key`) and reuses it across requests, so you are not re-authenticating on every call;
 - dispatches the client events, such as `Podio\Client\Events\TokenRefreshed`, as Laravel events through a PSR-14 adapter (`LaravelEventDispatcher`), so you can listen to them like any other event.
 
