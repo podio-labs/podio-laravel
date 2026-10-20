@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Podio\Client\Auth\AccessToken;
 use Podio\Client\Endpoints\AppsEndpoint;
@@ -12,6 +13,7 @@ use Podio\Client\Endpoints\ItemsEndpoint;
 use Podio\Client\Endpoints\OrganizationsEndpoint;
 use Podio\Client\Endpoints\SearchEndpoint;
 use Podio\Client\Endpoints\SpacesEndpoint;
+use Podio\Client\Events\AccessTokenRefreshed;
 use Podio\Client\PodioResponse;
 use Podio\Client\RateLimitSnapshot;
 use Podio\Client\Resources\Item;
@@ -46,6 +48,17 @@ test('it authenticates then fetches an item through the full laravel stack', fun
 
     Http::assertSent(fn ($r) => str_contains($r->url(), '/oauth/token'));
     Http::assertSent(fn ($r) => str_contains($r->url(), '/item/5') && $r->hasHeader('Authorization'));
+});
+
+test('it dispatches the access token it obtains as a laravel event', function () {
+    Event::fake([AccessTokenRefreshed::class]);
+    Http::fake([
+        '*/oauth/token' => Http::response(['access_token' => 'tok', 'expires_in' => 3600]),
+    ]);
+
+    Podio::authenticate();
+
+    Event::assertDispatched(AccessTokenRefreshed::class, fn (AccessTokenRefreshed $event): bool => $event->accessToken->value() === 'tok');
 });
 
 test('it caches the access token after authenticating', function () {

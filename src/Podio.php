@@ -18,6 +18,7 @@ use Podio\Client\Factory;
 use Podio\Client\PodioClient;
 use Podio\Client\PodioResponse;
 use Podio\Client\RateLimitSnapshot;
+use Podio\Laravel\Events\LaravelEventDispatcher;
 use Podio\Laravel\Http\LaravelHttpClient;
 
 final class Podio
@@ -33,6 +34,7 @@ final class Podio
             )
             ->withBaseUrl(config('podio.base_url'))
             ->withHttpClient(new LaravelHttpClient)
+            ->withEventDispatcher(new LaravelEventDispatcher)
             ->withTokenCache(
                 cache: Cache::store(config('podio.cache.store') ?: null),
                 key: config('podio.cache.key'),
