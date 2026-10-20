@@ -81,20 +81,20 @@ $token->refreshToken();
 
 Everything in `config/podio.php`:
 
-| Key | Env | Default                   |
-| --- | --- |---------------------------|
-| `base_url` | `PODIO_BASE_URL` | `'https://api.podio.com'` |
-| `auth.client_id` | `PODIO_CLIENT_ID` | `null`                    |
-| `auth.client_secret` | `PODIO_CLIENT_SECRET` | `null`                    |
-| `auth.method` | `PODIO_AUTH_METHOD` | `'password'`              |
-| `auth.username` | `PODIO_USERNAME` | `null`                    |
-| `auth.password` | `PODIO_PASSWORD` | `null`                    |
-| `auth.app_id` | `PODIO_APP_ID` | `null`                    |
-| `auth.app_token` | `PODIO_APP_TOKEN` | `null`                    |
-| `http.timeout` | `PODIO_HTTP_TIMEOUT` | `30`                      |
+| Key                    | Env                          | Default                   |
+|------------------------|------------------------------|---------------------------|
+| `base_url`             | `PODIO_BASE_URL`             | `'https://api.podio.com'` |
+| `auth.client_id`       | `PODIO_CLIENT_ID`            | `null`                    |
+| `auth.client_secret`   | `PODIO_CLIENT_SECRET`        | `null`                    |
+| `auth.method`          | `PODIO_AUTH_METHOD`          | `'password'`              |
+| `auth.username`        | `PODIO_USERNAME`             | `null`                    |
+| `auth.password`        | `PODIO_PASSWORD`             | `null`                    |
+| `auth.app_id`          | `PODIO_APP_ID`               | `null`                    |
+| `auth.app_token`       | `PODIO_APP_TOKEN`            | `null`                    |
+| `http.timeout`         | `PODIO_HTTP_TIMEOUT`         | `30`                      |
 | `http.connect_timeout` | `PODIO_HTTP_CONNECT_TIMEOUT` | `10`                      |
-| `cache.store` | `PODIO_CACHE_STORE` | `env('CACHE_STORE')`      |
-| `cache.key` | `PODIO_CACHE_KEY` | `'podio:access_token'`    |
+| `cache.store`          | `PODIO_CACHE_STORE`          | `env('CACHE_STORE')`      |
+| `cache.key`            | `PODIO_CACHE_KEY`            | `'podio:access_token'`    |
 
 ## Usage
 
