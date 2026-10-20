@@ -14,6 +14,7 @@ use Podio\Client\Endpoints\ItemsEndpoint;
 use Podio\Client\Endpoints\OrganizationsEndpoint;
 use Podio\Client\Endpoints\SearchEndpoint;
 use Podio\Client\Endpoints\SpacesEndpoint;
+use Podio\Client\Endpoints\UsersEndpoint;
 use Podio\Client\Factory;
 use Podio\Client\PodioClient;
 use Podio\Client\PodioResponse;
@@ -86,6 +87,11 @@ final class Podio
     public function embed(): EmbedEndpoint
     {
         return $this->client->embed();
+    }
+
+    public function users(): UsersEndpoint
+    {
+        return $this->client->users();
     }
 
     public function rateLimit(): RateLimitSnapshot

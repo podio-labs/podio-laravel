@@ -13,6 +13,7 @@ use Podio\Client\Endpoints\ItemsEndpoint;
 use Podio\Client\Endpoints\OrganizationsEndpoint;
 use Podio\Client\Endpoints\SearchEndpoint;
 use Podio\Client\Endpoints\SpacesEndpoint;
+use Podio\Client\Endpoints\UsersEndpoint;
 use Podio\Client\Events\TokenRefreshed;
 use Podio\Client\PodioResponse;
 use Podio\Client\RateLimitSnapshot;
@@ -31,7 +32,8 @@ test('it exposes every endpoint accessor', function () {
         ->and($podio->files())->toBeInstanceOf(FilesEndpoint::class)
         ->and($podio->comments())->toBeInstanceOf(CommentsEndpoint::class)
         ->and($podio->search())->toBeInstanceOf(SearchEndpoint::class)
-        ->and($podio->embed())->toBeInstanceOf(EmbedEndpoint::class);
+        ->and($podio->embed())->toBeInstanceOf(EmbedEndpoint::class)
+        ->and($podio->users())->toBeInstanceOf(UsersEndpoint::class);
 });
 
 test('it authenticates then fetches an item through the full laravel stack', function () {

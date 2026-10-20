@@ -13,6 +13,7 @@ use Podio\Client\Endpoints\ItemsEndpoint;
 use Podio\Client\Endpoints\OrganizationsEndpoint;
 use Podio\Client\Endpoints\SearchEndpoint;
 use Podio\Client\Endpoints\SpacesEndpoint;
+use Podio\Client\Endpoints\UsersEndpoint;
 use Podio\Client\PodioResponse;
 use Podio\Client\RateLimitSnapshot;
 
@@ -26,6 +27,7 @@ use Podio\Client\RateLimitSnapshot;
  * @method static CommentsEndpoint comments()
  * @method static SearchEndpoint search()
  * @method static EmbedEndpoint embed()
+ * @method static UsersEndpoint users()
  * @method static Token authenticate()
  * @method static Token|null token()
  * @method static PodioResponse send(string $method, string $uri, array $options = [])
