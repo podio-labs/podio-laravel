@@ -49,3 +49,25 @@ test('it sends neither body nor content-type for a bodyless request', function (
 
     Http::assertSent(fn ($r) => $r->body() === '' && ! $r->hasHeader('Content-Type'));
 });
+
+test('it waits for the configured timeout by default', function () {
+    config(['podio.http.timeout' => 30]);
+    Http::fake(function ($request, array $options) {
+        return Http::response((string) $options['timeout']);
+    });
+
+    $response = (new LaravelHttpClient)->sendRequest(new Request('GET', 'https://api.podio.com/ping'));
+
+    expect((string) $response->getBody())->toBe('30');
+});
+
+test('it waits for the timeout of a single request when given one', function () {
+    config(['podio.http.timeout' => 30]);
+    Http::fake(function ($request, array $options) {
+        return Http::response((string) $options['timeout']);
+    });
+
+    $response = (new LaravelHttpClient)->withTimeout(120)->sendRequest(new Request('GET', 'https://api.podio.com/ping'));
+
+    expect((string) $response->getBody())->toBe('120');
+});

@@ -3,19 +3,26 @@
 namespace Podio\Laravel\Http;
 
 use Illuminate\Support\Facades\Http;
-use Psr\Http\Client\ClientInterface;
+use Podio\Client\Http\TimeoutClient;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final readonly class LaravelHttpClient implements ClientInterface
+final readonly class LaravelHttpClient implements TimeoutClient
 {
+    public function __construct(private ?int $timeout = null) {}
+
+    public function withTimeout(int $seconds): self
+    {
+        return new self($seconds);
+    }
+
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $headers = array_map(fn (array $values): string => implode(', ', $values), $request->getHeaders());
 
         $pendingRequest = Http::withHeaders($headers)
             ->connectTimeout(config('podio.http.connect_timeout'))
-            ->timeout(config('podio.http.timeout'));
+            ->timeout($this->timeout ?? config('podio.http.timeout'));
 
         $body = (string) $request->getBody();
 
