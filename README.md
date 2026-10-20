@@ -110,6 +110,7 @@ $item = Podio::items()->get($itemId);
 $item = Podio::items()->create($appId, ['fields' => ['title' => 'Hello']]);
 $item = Podio::items()->update($itemId, ['fields' => ['title' => 'Updated']]);
 $total = Podio::items()->getCount($appId);
+$items = Podio::items()->lazy($appId, ['limit' => 500]);
 
 // Files
 $file = Podio::files()->upload($absolutePath, 'photo.jpg');
@@ -137,6 +138,10 @@ $space = Podio::spaces()->get($spaceId);
 // Apps
 $app = Podio::apps()->get($appId);
 $apps = Podio::apps()->getForSpace($spaceId);
+
+// Users
+$user = Podio::users()->get();
+$status = Podio::users()->getStatus();
 ```
 
 ### Raw requests
@@ -163,7 +168,8 @@ Podio::rateLimit()->remaining();
 `Podio\Laravel\Podio` builds a `Podio\Client\PodioClient` from your config and:
 
 - transports requests through Laravel's `Http` facade via a PSR-18 adapter (`LaravelHttpClient`) — so it honours your HTTP config, fakes, and middleware;
-- caches the OAuth access token (`cache.store` / `cache.key`) and reuses it across requests, so you are not re-authenticating on every call.
+- caches the OAuth access token (`cache.store` / `cache.key`) and reuses it across requests, so you are not re-authenticating on every call;
+- dispatches the client events, such as `Podio\Client\Events\TokenRefreshed`, as Laravel events through a PSR-14 adapter (`LaravelEventDispatcher`), so you can listen to them like any other event.
 
 The facade is bound as a singleton, so the client — and its cached token — is shared for the lifetime of the request.
 
