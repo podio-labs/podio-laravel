@@ -72,7 +72,7 @@ Read (and persist) the current token:
 $token = Podio::authenticate(); // ensure a valid token and return it
 $token = Podio::token();        // current token, or null
 
-$token->value();
+$token->accessToken();
 $token->expiresAt();
 $token->refreshToken();
 ```

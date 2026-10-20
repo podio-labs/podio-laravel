@@ -4,7 +4,7 @@ namespace Podio\Laravel;
 
 use Illuminate\Support\Facades\Cache;
 use InvalidArgumentException;
-use Podio\Client\Auth\AccessToken;
+use Podio\Client\Auth\Token;
 use Podio\Client\Endpoints\AppsEndpoint;
 use Podio\Client\Endpoints\CommentsEndpoint;
 use Podio\Client\Endpoints\EmbedEndpoint;
@@ -93,12 +93,12 @@ final class Podio
         return $this->client->rateLimit();
     }
 
-    public function authenticate(): AccessToken
+    public function authenticate(): Token
     {
         return $this->client->authenticate();
     }
 
-    public function token(): ?AccessToken
+    public function token(): ?Token
     {
         return $this->client->token();
     }

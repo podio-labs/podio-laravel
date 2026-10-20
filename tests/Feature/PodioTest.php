@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
-use Podio\Client\Auth\AccessToken;
+use Podio\Client\Auth\Token;
 use Podio\Client\Endpoints\AppsEndpoint;
 use Podio\Client\Endpoints\CommentsEndpoint;
 use Podio\Client\Endpoints\EmbedEndpoint;
@@ -13,7 +13,7 @@ use Podio\Client\Endpoints\ItemsEndpoint;
 use Podio\Client\Endpoints\OrganizationsEndpoint;
 use Podio\Client\Endpoints\SearchEndpoint;
 use Podio\Client\Endpoints\SpacesEndpoint;
-use Podio\Client\Events\AccessTokenRefreshed;
+use Podio\Client\Events\TokenRefreshed;
 use Podio\Client\PodioResponse;
 use Podio\Client\RateLimitSnapshot;
 use Podio\Client\Resources\Item;
@@ -50,15 +50,15 @@ test('it authenticates then fetches an item through the full laravel stack', fun
     Http::assertSent(fn ($r) => str_contains($r->url(), '/item/5') && $r->hasHeader('Authorization'));
 });
 
-test('it dispatches the access token it obtains as a laravel event', function () {
-    Event::fake([AccessTokenRefreshed::class]);
+test('it dispatches the token it obtains as a laravel event', function () {
+    Event::fake([TokenRefreshed::class]);
     Http::fake([
         '*/oauth/token' => Http::response(['access_token' => 'tok', 'expires_in' => 3600]),
     ]);
 
     Podio::authenticate();
 
-    Event::assertDispatched(AccessTokenRefreshed::class, fn (AccessTokenRefreshed $event): bool => $event->accessToken->value() === 'tok');
+    Event::assertDispatched(TokenRefreshed::class, fn (TokenRefreshed $event): bool => $event->token->accessToken() === 'tok');
 });
 
 test('it caches the access token after authenticating', function () {
@@ -117,8 +117,8 @@ test('authenticate ensures and returns the current access token', function () {
 
     $token = Podio::authenticate();
 
-    expect($token)->toBeInstanceOf(AccessToken::class)
-        ->and($token->value())->toBe('tok')
+    expect($token)->toBeInstanceOf(Token::class)
+        ->and($token->accessToken())->toBe('tok')
         ->and($token->refreshToken())->toBe('ref');
 });
 
@@ -133,8 +133,8 @@ test('token is null before authenticating and holds the token afterwards', funct
 
     $podio->authenticate();
 
-    expect($podio->token())->toBeInstanceOf(AccessToken::class)
-        ->and($podio->token()->value())->toBe('tok');
+    expect($podio->token())->toBeInstanceOf(Token::class)
+        ->and($podio->token()->accessToken())->toBe('tok');
 });
 
 test('it authenticates with the app grant', function () {
